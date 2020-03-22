@@ -1,0 +1,12 @@
+node_modules
+
+dist
+.idea
+.project
+.classpath
+
+logs
+*.log
+npm-debug.log*
+
+.env
