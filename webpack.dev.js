@@ -11,6 +11,7 @@ module.exports = merge(common, {
     watchContentBase: true,
     hot: true,
   },
+  devtool: 'source-map',
   output: {
     filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),

@@ -1,9 +1,18 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:500,600&display=swap');
+
+//variables import
 @import "styles/settings";
+@import "styles/mixins";
+
+//
+@import "styles/app";
+@import 'styles/card-form';
 
 //CSS reset by aliagotor.io >> https://alligator.io/css/minimal-css-reset/
 html {
   box-sizing: border-box;
   font-size: 16px;
+  font-family: 'Montserrat', sans-serif;
 }
 
 *, *:before, *:after {
