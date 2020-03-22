@@ -1,4 +1,3 @@
-
 module.exports = {
   entry: {
     main: './src/index.js',
@@ -16,6 +15,12 @@ module.exports = {
           name: '[name].[hash].[ext]',
           output: 'images',
         },
+      },
+      {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader",
       },
       {
         test: /\.js$/,
