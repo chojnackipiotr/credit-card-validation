@@ -12,7 +12,67 @@
 <body>
 <div class="app-wrapper">
     <div class="card-form">
-    
+        <div class="card-form__container">
+            <div class="card-input">
+                <label for="credit-card-number" class="card-input__label">Please type your credit card number</label>
+                <span class="material-icons card-form__eye-icon">remove_red_eye</span>
+                <input type="tel" id="credit-card-number" maxlength="16" data-card-field="" autocomplete="off"
+                       class="card-input__input">
+            </div>
+            <div class="card-input">
+                <label for="credit-card-owner" class="card-input__label">Please type your full name</label>
+                <input type="text" id="credit-card-owner" data-card-field="" autocomplete="off"
+                       class="card-input__input">
+            </div>
+            <div class="card-form__row">
+                <div class="card-form__expiration-date">
+                    <label class="card-input">
+                        Please select expiration date
+                    </label>
+                    <div class="card-form__date-select">
+                        <select id="credit-card-month" class="card-input__select"></select>
+                        <select id="credit-card-year" class="card-input__select"></select>
+                    </div>
+                </div>
+                <div class="card-input">
+                    <label for="credit-card-cvv" class="card-input__label">CVV</label>
+                    <input type="tel" id="credit-card-cvv" maxlength="3" data-card-field="" autocomplete="off"
+                           class="card-input__input">
+                </div>
+            </div>
+        </div>
+        <button id="credit-card__submit-button">Submit</button>
+    </div>
+    <div class="credit-card">
+        <div class="credit-car__top-bar">
+            chip
+        </div>
+        <div class="credit-car__card-number-placeholder">
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__free-space"></span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__free-space"></span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__free-space"></span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__single-number">#</span>
+            <span class="credit-card__free-space"></span>
+        </div>
+        <div class="credit-car__card-other-data">
+            <div class="credit-card__card-owner">owner</div>
+            <div class="credit-card__expiration-date">expiration</div>
+        </div>
     </div>
 </div>
 </body>

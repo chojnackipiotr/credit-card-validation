@@ -1,5 +1,5 @@
-@mixin mainTripleGradient($color1, $color2, $color3, $gradientDirection) {
-  background: $color3;
-  background: -webkit-linear-gradient(to $gradientDirection, $color1, $color2, $color3);
-  background: linear-gradient(to $gradientDirection, $color1, $color2, $color3);
+@mixin doubleGradient($color1, $color2, $gradientDirection) {
+  background: $color1;
+  background: -webkit-linear-gradient(to $gradientDirection, $color1, $color2);
+  background: linear-gradient(to $gradientDirection, $color1, $color2);
 }

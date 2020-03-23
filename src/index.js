@@ -1,7 +1,3 @@
 import './main.scss';
+import './credit-card';
 
-const testFunction = () => {
-  console.log('To jest test');
-};
-
-testFunction();

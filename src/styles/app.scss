@@ -1,5 +1,9 @@
 .app-wrapper {
-  width: 100%;
+  @include doubleGradient(#3d72b4, #525252, bottom);
+  display: flex;
   height: 100vh;
-  @include mainTripleGradient(#6FB1FC, #4364F7, #0052D4, bottom);
+  justify-content: center;
+  padding-top: 150px;
+  position: relative;
+  width: 100%;
 }

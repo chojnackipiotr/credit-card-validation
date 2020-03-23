@@ -1,0 +1,52 @@
+.card-form {
+  background-color: white;
+  border-radius: 8px 8px 0 0;
+  height: 100%;
+  max-width: 570px;
+  width: 100%;
+}
+
+.credit-card {
+  position: absolute;
+  max-width: 430px;
+  width: 100%;
+  height: 270px;
+  background-color: red;
+  z-index: 4;
+  top: 40px;
+  border-radius: 10px;
+}
+
+.card-form__container {
+  width: 100%;
+  max-height: 100vh;
+  background-color: green;
+  margin-top: 200px;
+  padding: 30px;
+}
+
+.card-input {
+  width: 100%;
+}
+
+.card-input__input {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.card-form__eye-icon {
+ color: black;
+  cursor: pointer;
+}
+
+.card-form__eye-icon--visible {
+  color: navy;
+}
+
+.card-form__eye-icon--disabled {
+  cursor: not-allowed!important;
+  color: gray;
+}
