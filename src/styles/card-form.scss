@@ -49,4 +49,5 @@
 .card-form__eye-icon--disabled {
   cursor: not-allowed!important;
   color: gray;
+  pointer-events: none;
 }

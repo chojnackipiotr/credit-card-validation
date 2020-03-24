@@ -26,7 +26,6 @@ class CreditCard {
   setCardNumberVisibility() {
     return this.isCardNumberVisible = !this.isCardNumberVisible;
   }
-
 }
 
 //CreditCard initialization
@@ -38,14 +37,32 @@ const creditCardNumbersElements = document.querySelectorAll('.credit-card__singl
 const creditCardOwnerInput = document.querySelector('#credit-card-owner');
 const creditCardOwnerData = document.querySelector('.credit-card__card-owner');
 const creditCardMonthExpSelect = document.querySelector('#credit-card-month');
+const creditCardMonthExpText = document.querySelector('.credit-card__expiration-month');
 const creditCardYearExpSelect = document.querySelector('#credit-card-year');
+const creditCardYearExpText = document.querySelector('.credit-card__expiration-year');
 const creditCardCVVInput = document.querySelector('#credit-card-cvv');
 const submitButton = document.querySelector('#credit-card__submit-button');
 const eyeIcon = document.querySelector('.card-form__eye-icon');
 
-//Initialize CC show eyeicon as disabled
+//DOM Manipulation
+// generationg comming years
+const currentYear = new Date().getFullYear();
+let yearsArray = [currentYear];
+
+while (yearsArray.length < 11) {
+  let commingYear = currentYear + yearsArray.length;
+  yearsArray = [...yearsArray, commingYear];
+}
+
+yearsArray.forEach(year => {
+  let option = document.createElement('option');
+  option.innerHTML = `${year}`;
+  option.setAttribute('value', year.toString().substr(-2));
+  creditCardYearExpSelect.appendChild(option);
+});
+
+//Initialize CC show eye icon as disabled
 const shouldDisableEyeIcon = () => {
-  console.log('card.cardNumber', card.cardNumber);
   return card.cardNumber.length === 0 ? eyeIcon.classList.add('card-form__eye-icon--disabled') : eyeIcon.classList.remove('card-form__eye-icon--disabled');
 };
 shouldDisableEyeIcon();
@@ -58,6 +75,10 @@ const generateData = (value, field) => {
       break;
     case 'owner':
       showCardOwner(value);
+      break;
+    case 'month':
+    case 'year':
+      showExpData(value, field);
       break;
   }
   card.setCardData(value, field);
@@ -87,19 +108,73 @@ const displayCardNumber = value => {
   });
 };
 
+const showExpData = (value, field) => {
+  if (field === 'month') {
+    creditCardMonthExpText.innerHTML = value;
+  } else if (field === 'year') {
+    creditCardYearExpText.innerHTML = value;
+  }
+};
+
 const setVisibility = () => {
   card.setCardNumberVisibility();
-  if (card.isCardNumberVisible) {
+  const cardNumberArray = [...card.cardNumber];
+
+  if (card.isCardNumberVisible && !shouldDisableEyeIcon()) {
     eyeIcon.classList.add('card-form__eye-icon--visible');
+    focusShowCardNumber();
     //TODO: after clicking user should see all numbers.
+    creditCardNumbersElements.forEach((element, index) => {
+      if (index < cardNumberArray.length) {
+        element.innerHTML = cardNumberArray[index];
+      } else {
+        element.innerHTML = '#';
+      }
+    });
+
   } else {
     eyeIcon.classList.remove('card-form__eye-icon--visible');
+    blurHideCardNumbers(card.cardNumber);
+    creditCardNumbersElements.forEach((element, index) => {
+      if (index < 4 && index < cardNumberArray.length || index > 11 && index < cardNumberArray.length) {
+        element.innerHTML = cardNumberArray[index];
+      } else {
+        element.innerHTML = '#';
+      }
+    });
   }
+};
+
+const focusShowCardNumber = () => {
+  creditCardNumberInput.value = card.cardNumber;
+};
+
+const blurHideCardNumbers = (value) => {
+  const inputValueArray = [...value];
+  let hiddenNumber = '';
+
+
+  if (inputValueArray.length > 4) {
+    inputValueArray.forEach((element, index) => {
+      if (index < 4 || index > 11) {
+        hiddenNumber += `${element}`;
+      } else {
+        hiddenNumber += '*';
+      }
+    });
+  }
+
+  if (!card.isCardNumberVisible) {
+    creditCardNumberInput.value = hiddenNumber;
+  }
+
 };
 
 //events
 //Set card number on input change
 creditCardNumberInput.addEventListener('input', (e) => generateData(e.target.value, 'number'));
+creditCardNumberInput.addEventListener('blur', (e) => blurHideCardNumbers(e.target.value));
+creditCardNumberInput.addEventListener('focus', () => focusShowCardNumber());
 //Set owner data
 creditCardOwnerInput.addEventListener('input', (e) => generateData(e.target.value, 'owner'));
 //Set month expiration date
