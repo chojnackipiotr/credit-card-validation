@@ -43,6 +43,7 @@ const creditCardYearExpText = document.querySelector('.credit-card__expiration-y
 const creditCardCVVInput = document.querySelector('#credit-card-cvv');
 const submitButton = document.querySelector('#credit-card__submit-button');
 const eyeIcon = document.querySelector('.card-form__eye-icon');
+const creditCardImage = document.querySelector('.credit-card__card-image');
 
 //DOM Manipulation
 // generationg comming years
@@ -89,7 +90,48 @@ const showCardOwner = (value) => {
   creditCardOwnerData.innerHTML = value;
 };
 
+const cardType = value => {
+  let reg = new RegExp('^4');
+  if (value.match(reg) != null) return 'visa';
+
+  reg = new RegExp('^(34|37)');
+  if (value.match(reg) != null) return 'amex';
+
+  reg = new RegExp('^5[1-5]');
+  if (value.match(reg) != null) return 'mastercard';
+
+  reg = new RegExp('^6011');
+  if (value.match(reg) != null) return 'discover';
+
+  reg = new RegExp('^62');
+  if (value.match(reg) != null) return 'unionpay';
+
+  reg = new RegExp('^9792');
+  if (value.match(reg) != null) return 'troy';
+
+  reg = new RegExp('^3(?:0([0-5]|9)|[689]\\d?)\\d{0,11}');
+  if (value.match(reg) != null) return 'dinersclub';
+
+  reg = new RegExp('^35(2[89]|[3-8])');
+  if (value.match(reg) != null) return 'jcb';
+
+};
+
+const validateCompanyLogo = value => {
+  const imageElement = document.createElement('img');
+  const company = cardType(value);
+  const imageLink = `./static/images/companies-logos/${company}.png`;
+  const altName = company;
+
+  imageElement.setAttribute('src', imageLink);
+  imageElement.setAttribute('alt', altName);
+  imageElement.setAttribute('class', 'credit-card__company-image');
+  creditCardImage.innerHTML = '';
+  creditCardImage.appendChild(imageElement);
+};
+
 const displayCardNumber = value => {
+  validateCompanyLogo(value);
   const inputValueArray = [...value];
   creditCardNumbersElements.forEach((element, index) => {
     if (card.isCardNumberVisible) {
@@ -120,7 +162,7 @@ const setVisibility = () => {
   card.setCardNumberVisibility();
   const cardNumberArray = [...card.cardNumber];
 
-  if (card.isCardNumberVisible && !shouldDisableEyeIcon()) {
+  if (card.isCardNumberVisible) {
     eyeIcon.classList.add('card-form__eye-icon--visible');
     focusShowCardNumber();
     //TODO: after clicking user should see all numbers.
@@ -153,7 +195,6 @@ const blurHideCardNumbers = (value) => {
   const inputValueArray = [...value];
   let hiddenNumber = '';
 
-
   if (inputValueArray.length > 4) {
     inputValueArray.forEach((element, index) => {
       if (index < 4 || index > 11) {
@@ -162,6 +203,8 @@ const blurHideCardNumbers = (value) => {
         hiddenNumber += '*';
       }
     });
+  } else {
+    hiddenNumber = inputValueArray.join('');
   }
 
   if (!card.isCardNumberVisible) {
