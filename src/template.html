@@ -12,6 +12,7 @@
 <body>
 <div class="app-wrapper">
     <div class="card-form">
+        
         <div class="card-form__container">
             <div class="card-input">
                 <label for="credit-card-number" class="card-input__label">Please type your credit card number</label>
@@ -52,14 +53,15 @@
                 </div>
                 <div class="card-input">
                     <label for="credit-card-cvv" class="card-input__label">CVV</label>
-                    <input type="tel" id="credit-card-cvv" maxlength="3" data-card-field="" autocomplete="off"
+                    <input type="password" autocomplete="off" id="credit-card-cvv" maxlength="3" data-card-field="" autocomplete="off"
                            class="card-input__input">
                 </div>
             </div>
         </div>
         <button id="credit-card__submit-button">Submit</button>
     </div>
-    <div class="credit-card">
+    <div class="credit-card credit-card__rotate__back">
+        <div class="credit-card__front">
         <div class="credit-car__top-bar">
             <img class='credit-card__chip-image' src="../src/static/images/chip.png" alt="card chip">
             <div class="credit-card__card-image"><span class="material-icons">payment</span></div>
@@ -99,6 +101,15 @@
                     <span class="credit-card__expiration-year">YY</span>
                 </div>
             </label>
+        </div>
+        </div>
+        <div class="credit-card__back">
+            <div class="credit-card__back-magnetic"></div>
+            <div class="credit-card__back-cvv-data">
+                <div class="credit-card__back-cvv-label">CVV</div>
+                <div class="credit-card__back-cvv-code"></div>
+                <div></div>
+            </div>
         </div>
     </div>
 </div>

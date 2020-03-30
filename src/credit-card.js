@@ -1,3 +1,12 @@
+import visa from './static/images/companies-logos/visa.png';
+import amex from './static/images/companies-logos/amex.png';
+import mastercard from './static/images/companies-logos/mastercard.png';
+import discover from './static/images/companies-logos/discover.png';
+import unionpay from './static/images/companies-logos/unionpay.png';
+import troy from './static/images/companies-logos/troy.png';
+import dinersclub from './static/images/companies-logos/dinersclub.png';
+import jcb from './static/images/companies-logos/jcb.png';
+
 class CreditCard {
   constructor() {
     this.cardNumber = '';
@@ -32,6 +41,7 @@ class CreditCard {
 const card = new CreditCard();
 
 // variables
+const creditCard = document.querySelector('.credit-card');
 const creditCardNumberInput = document.querySelector('#credit-card-number');
 const creditCardNumbersElements = document.querySelectorAll('.credit-card__single-number');
 const creditCardOwnerInput = document.querySelector('#credit-card-owner');
@@ -44,6 +54,7 @@ const creditCardCVVInput = document.querySelector('#credit-card-cvv');
 const submitButton = document.querySelector('#credit-card__submit-button');
 const eyeIcon = document.querySelector('.card-form__eye-icon');
 const creditCardImage = document.querySelector('.credit-card__card-image');
+const creditCardCVVData = document.querySelector('.credit-card__back-cvv-code');
 
 //DOM Manipulation
 // generationg comming years
@@ -81,6 +92,9 @@ const generateData = (value, field) => {
     case 'year':
       showExpData(value, field);
       break;
+    case 'cvv':
+      handleCVVData(value);
+      break;
   }
   card.setCardData(value, field);
   shouldDisableEyeIcon();
@@ -92,47 +106,68 @@ const showCardOwner = (value) => {
 
 const cardType = value => {
   let reg = new RegExp('^4');
-  if (value.match(reg) != null) return 'visa';
+  if (value.match(reg) != null) return visa;
 
   reg = new RegExp('^(34|37)');
-  if (value.match(reg) != null) return 'amex';
+  if (value.match(reg) != null) return amex;
 
   reg = new RegExp('^5[1-5]');
-  if (value.match(reg) != null) return 'mastercard';
+  if (value.match(reg) != null) return mastercard;
 
   reg = new RegExp('^6011');
-  if (value.match(reg) != null) return 'discover';
+  if (value.match(reg) != null) return discover;
 
   reg = new RegExp('^62');
-  if (value.match(reg) != null) return 'unionpay';
+  if (value.match(reg) != null) return unionpay;
 
   reg = new RegExp('^9792');
-  if (value.match(reg) != null) return 'troy';
+  if (value.match(reg) != null) return troy;
 
   reg = new RegExp('^3(?:0([0-5]|9)|[689]\\d?)\\d{0,11}');
-  if (value.match(reg) != null) return 'dinersclub';
+  if (value.match(reg) != null) return dinersclub;
 
   reg = new RegExp('^35(2[89]|[3-8])');
-  if (value.match(reg) != null) return 'jcb';
+  if (value.match(reg) != null) return jcb;
 
 };
 
-const validateCompanyLogo = value => {
-  const imageElement = document.createElement('img');
-  const company = cardType(value);
-  const imageLink = `./static/images/companies-logos/${company}.png`;
-  const altName = company;
+const rotateCard = (direction) => {
+  if (direction === 'front') {
+    creditCard.classList.add('credit-card__rotate__front');
+    creditCard.classList.remove('credit-card__rotate__back');
+  } else {
+    creditCard.classList.add('credit-card__rotate__back');
+    creditCard.classList.remove('credit-card__rotate__front');
+  }
+};
 
-  imageElement.setAttribute('src', imageLink);
-  imageElement.setAttribute('alt', altName);
-  imageElement.setAttribute('class', 'credit-card__company-image');
-  creditCardImage.innerHTML = '';
-  creditCardImage.appendChild(imageElement);
+const handleCVVData = (value) => {
+  creditCardCVVData.innerHTML = value;
+};
+
+const validateCompanyLogo = value => {
+  const company = cardType(value);
+  const altName = cardType(value);
+  if (company) {
+    const imageElement = document.createElement('img');
+    imageElement.setAttribute('src', company);
+    imageElement.setAttribute('alt', altName);
+    imageElement.setAttribute('class', 'credit-card__company-image');
+    creditCardImage.innerHTML = '';
+    creditCardImage.appendChild(imageElement);
+  } else {
+    const iconElement = document.createElement('span');
+    iconElement.classList.add('material-icons');
+    iconElement.innerHTML='payment';
+    creditCardImage.innerHTML = '';
+    creditCardImage.appendChild(iconElement);
+  }
 };
 
 const displayCardNumber = value => {
   validateCompanyLogo(value);
   const inputValueArray = [...value];
+
   creditCardNumbersElements.forEach((element, index) => {
     if (card.isCardNumberVisible) {
       if (index < inputValueArray.length) {
@@ -142,8 +177,12 @@ const displayCardNumber = value => {
       }
     } else {
       if (index < 4 && index < inputValueArray.length || index > 11 && index < inputValueArray.length) {
+        element.classList.add('credit-card__single-number-animation--active');
+        setTimeout(() => {
         element.innerHTML = inputValueArray[index];
+        },20)
       } else {
+        element.classList.remove('credit-card__single-number-animation--active');
         element.innerHTML = '#';
       }
     }
@@ -165,7 +204,6 @@ const setVisibility = () => {
   if (card.isCardNumberVisible) {
     eyeIcon.classList.add('card-form__eye-icon--visible');
     focusShowCardNumber();
-    //TODO: after clicking user should see all numbers.
     creditCardNumbersElements.forEach((element, index) => {
       if (index < cardNumberArray.length) {
         element.innerHTML = cardNumberArray[index];
@@ -173,7 +211,6 @@ const setVisibility = () => {
         element.innerHTML = '#';
       }
     });
-
   } else {
     eyeIcon.classList.remove('card-form__eye-icon--visible');
     blurHideCardNumbers(card.cardNumber);
@@ -226,6 +263,8 @@ creditCardMonthExpSelect.addEventListener('change', (e) => generateData(e.target
 creditCardYearExpSelect.addEventListener('change', (e) => generateData(e.target.value, 'year'));
 //Set CVV code
 creditCardCVVInput.addEventListener('input', (e) => generateData(e.target.value, 'cvv'));
+creditCardCVVInput.addEventListener('focus', () => rotateCard('back'));
+creditCardCVVInput.addEventListener('blur', () => rotateCard('front'));
 //Eye visibility change
 eyeIcon.addEventListener('click', setVisibility);
 //Submit form
