@@ -15,6 +15,7 @@ class CreditCard {
     this.expirationYear = '';
     this.cvvCode = '';
     this.isCardNumberVisible = false;
+    this.cardCompany = '';
   }
 
   setCardData(value, field) {
@@ -99,12 +100,24 @@ const generateData = (value, field) => {
   card.setCardData(value, field);
   shouldDisableEyeIcon();
 };
+
+const checkIsNumber = (event) => {
+  if (event.which < 48 || event.which > 57) {
+    event.preventDefault();
+  }
+};
+
 // show user actual credit card owner data on html
 const showCardOwner = (value) => {
-  creditCardOwnerData.innerHTML = value;
+  if (value.length === 0) {
+    creditCardOwnerData.innerHTML = 'full name';
+  } else {
+    creditCardOwnerData.innerHTML = value;
+  }
 };
 
 const cardType = value => {
+
   let reg = new RegExp('^4');
   if (value.match(reg) != null) return visa;
 
@@ -128,7 +141,6 @@ const cardType = value => {
 
   reg = new RegExp('^35(2[89]|[3-8])');
   if (value.match(reg) != null) return jcb;
-
 };
 
 const rotateCard = (direction) => {
@@ -155,17 +167,18 @@ const validateCompanyLogo = value => {
     imageElement.setAttribute('class', 'credit-card__company-image');
     creditCardImage.innerHTML = '';
     creditCardImage.appendChild(imageElement);
+    card.cardCompany = company;
   } else {
-    const iconElement = document.createElement('span');
-    iconElement.classList.add('material-icons');
-    iconElement.innerHTML='payment';
-    creditCardImage.innerHTML = '';
-    creditCardImage.appendChild(iconElement);
+    //TODO: remove company logo
+    card.cardCompany = ''
   }
 };
 
 const displayCardNumber = value => {
-  validateCompanyLogo(value);
+  if (card.cardCompany.length === 0 || card.cardNumber.length === 0) {
+    console.log('ok');
+    validateCompanyLogo(value);
+  }
   const inputValueArray = [...value];
 
   creditCardNumbersElements.forEach((element, index) => {
@@ -179,8 +192,8 @@ const displayCardNumber = value => {
       if (index < 4 && index < inputValueArray.length || index > 11 && index < inputValueArray.length) {
         element.classList.add('credit-card__single-number-animation--active');
         setTimeout(() => {
-        element.innerHTML = inputValueArray[index];
-        },20)
+          element.innerHTML = inputValueArray[index];
+        }, 20)
       } else {
         element.classList.remove('credit-card__single-number-animation--active');
         element.innerHTML = '#';
@@ -197,9 +210,13 @@ const showExpData = (value, field) => {
   }
 };
 
-const setVisibility = () => {
+const setVisibility = (e) => {
   card.setCardNumberVisibility();
   const cardNumberArray = [...card.cardNumber];
+  if (cardNumberArray.length === 0) {
+    e.preventDefault();
+    return;
+  }
 
   if (card.isCardNumberVisible) {
     eyeIcon.classList.add('card-form__eye-icon--visible');
@@ -252,6 +269,7 @@ const blurHideCardNumbers = (value) => {
 
 //events
 //Set card number on input change
+creditCardNumberInput.addEventListener('keypress', (e) => checkIsNumber(e));
 creditCardNumberInput.addEventListener('input', (e) => generateData(e.target.value, 'number'));
 creditCardNumberInput.addEventListener('blur', (e) => blurHideCardNumbers(e.target.value));
 creditCardNumberInput.addEventListener('focus', () => focusShowCardNumber());
@@ -262,11 +280,12 @@ creditCardMonthExpSelect.addEventListener('change', (e) => generateData(e.target
 //Set year expiration date
 creditCardYearExpSelect.addEventListener('change', (e) => generateData(e.target.value, 'year'));
 //Set CVV code
+creditCardCVVInput.addEventListener('keypress', (e) => checkIsNumber(e));
 creditCardCVVInput.addEventListener('input', (e) => generateData(e.target.value, 'cvv'));
 creditCardCVVInput.addEventListener('focus', () => rotateCard('back'));
 creditCardCVVInput.addEventListener('blur', () => rotateCard('front'));
 //Eye visibility change
-eyeIcon.addEventListener('click', setVisibility);
+eyeIcon.addEventListener('click', (e) => setVisibility(e));
 //Submit form
 submitButton.addEventListener('click', () => {
   console.log('CARD DATA', card);

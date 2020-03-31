@@ -9,26 +9,61 @@
 .card-form__container {
   width: 100%;
   max-height: 100vh;
-  background-color: green;
   margin-top: 200px;
-  padding: 30px;
+  padding:  0 30px 30px 30px;
 }
 
 .card-input {
   width: 100%;
+  margin-bottom: 12px;
+  position: relative;
 }
 
 .card-input__input {
   width: 100%;
   height: 40px;
   border-radius: 8px;
-  border: none;
+  border: 1px solid gray;
   outline: none;
+  padding: 10px;
+  font-size: 20px;
+  transition: border 1s;
+
+  &:focus {
+    border: 1px solid navy;
+    transition: border 1s;
+  }
+}
+
+.card-input__select {
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid gray;
+  outline: none;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.card-form__row {
+  display: flex;
+  justify-content: space-between;
+}
+
+label {
+  margin-bottom: 8px;
+  display: inline-block;
+}
+
+.card-input--small {
+  width: 40%;
 }
 
 .card-form__eye-icon {
- color: black;
+  color: black;
   cursor: pointer;
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
 }
 
 .card-form__eye-icon--visible {
@@ -38,5 +73,4 @@
 .card-form__eye-icon--disabled {
   cursor: not-allowed!important;
   color: gray;
-  pointer-events: none;
 }
