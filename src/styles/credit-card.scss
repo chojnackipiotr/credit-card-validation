@@ -138,13 +138,13 @@
   align-items: flex-end;
 }
 
-.credit-card__single-number-animation--active {
-  animation-name: slide;
-  animation-duration: 0.5s;
+.credit-card__expiration-month,
+.credit-card__expiration-year {
+  display: inline-block;
 }
 
-.credit-card__single-number-animation--disable {
-  animation-name: slide-down;
+.credit-card__single-number-animation--active {
+  animation-name: slide;
   animation-duration: 0.5s;
 }
 
@@ -161,26 +161,6 @@
   }
   75% {
     transform: translateY(5);
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slide-down {
-  0% {
-    transform: translateY(5px);
-  }
-  25% {
-    opacity: 0;
-    transform: translateY(15px);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
-  75% {
-    transform: translateY(-5);
   }
   100% {
     transform: translateY(0);

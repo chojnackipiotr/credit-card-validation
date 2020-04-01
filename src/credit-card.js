@@ -205,8 +205,16 @@ const displayCardNumber = value => {
 const showExpData = (value, field) => {
   if (field === 'month') {
     creditCardMonthExpText.innerHTML = value;
+    creditCardMonthExpText.classList.add('credit-card__single-number-animation--active');
+    setTimeout(() => {
+      creditCardMonthExpText.classList.remove('credit-card__single-number-animation--active');
+    }, 1000)
   } else if (field === 'year') {
     creditCardYearExpText.innerHTML = value;
+    creditCardYearExpText.classList.add('credit-card__single-number-animation--active');
+    setTimeout(() => {
+      creditCardYearExpText.classList.remove('credit-card__single-number-animation--active');
+    }, 1000)
   }
 };
 
