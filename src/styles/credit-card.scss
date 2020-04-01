@@ -87,10 +87,6 @@
   width: 60px;
 }
 
-.credit-card__company-image {
-  width: 40px;
-}
-
 .credit-car__card-number-placeholder {
   font-weight: 500;
   line-height: 1;
@@ -166,4 +162,31 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+.credit-card__company-image {
+  width: 40px;
+  position: relative;
+  bottom: -50px;
+  opacity: 0;
+}
+
+.credit-card__company-image--show {
+  animation: showFromBottom 0.3s forwards linear;
+}
+
+@keyframes showFromBottom {
+  0% { bottom: -50px}
+  50% {bottom: -25px; opacity: 0.7}
+  100% {bottom: 0; opacity: 1}
+}
+
+.credit-card__company-image--hide {
+  animation: hideToTop 0.1s forwards linear;
+}
+
+@keyframes hideToTop {
+  100% { bottom: 30px}
+  50% {bottom: 10px; opacity: 0.7}
+  0% {bottom: 0; opacity: 1}
 }

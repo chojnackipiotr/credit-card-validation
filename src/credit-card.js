@@ -160,25 +160,27 @@ const handleCVVData = (value) => {
 const validateCompanyLogo = value => {
   const company = cardType(value);
   const altName = cardType(value);
-  if (company) {
+  if (company && company !== card.cardCompany) {
     const imageElement = document.createElement('img');
     imageElement.setAttribute('src', company);
     imageElement.setAttribute('alt', altName);
     imageElement.setAttribute('class', 'credit-card__company-image');
+    imageElement.classList.add('credit-card__company-image--show');
     creditCardImage.innerHTML = '';
     creditCardImage.appendChild(imageElement);
     card.cardCompany = company;
-  } else {
-    //TODO: remove company logo
-    card.cardCompany = ''
+  } else if (value.length === 0) {
+    document.querySelector('.credit-card__company-image').classList.add('credit-card__company-image--hide');
+    setTimeout(() => {
+      creditCardImage.innerHTML = '';
+      card.cardCompany = ''
+    }, 100);
   }
 };
 
 const displayCardNumber = value => {
-  if (card.cardCompany.length === 0 || card.cardNumber.length === 0) {
-    console.log('ok');
-    validateCompanyLogo(value);
-  }
+
+  validateCompanyLogo(value);
   const inputValueArray = [...value];
 
   creditCardNumbersElements.forEach((element, index) => {
