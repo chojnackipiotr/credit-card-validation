@@ -7,6 +7,11 @@ import troy from './static/images/companies-logos/troy.png';
 import dinersclub from './static/images/companies-logos/dinersclub.png';
 import jcb from './static/images/companies-logos/jcb.png';
 
+import pattern1 from './static/images/card-patterns/pattern1.jpg'
+import pattern2 from './static/images/card-patterns/pattern2.jpg'
+import pattern3 from './static/images/card-patterns/pattern3.jpg'
+import pattern4 from './static/images/card-patterns/pattern4.jpg'
+
 class CreditCard {
   constructor() {
     this.cardNumber = '';
@@ -56,6 +61,10 @@ const submitButton = document.querySelector('#credit-card__submit-button');
 const eyeIcon = document.querySelector('.card-form__eye-icon');
 const creditCardImage = document.querySelector('.credit-card__card-image');
 const creditCardCVVData = document.querySelector('.credit-card__back-cvv-code');
+const backgroundPattern = [pattern1, pattern2, pattern3, pattern4];
+const creditCardNumberPlaceholder = document.querySelector('.credit-car__card-number-placeholder');
+const creditCardOwnerPlaceholder = document.querySelector('.credit-card-owner__placeholder');
+
 
 //DOM Manipulation
 // generationg comming years
@@ -73,6 +82,10 @@ yearsArray.forEach(year => {
   option.setAttribute('value', year.toString().substr(-2));
   creditCardYearExpSelect.appendChild(option);
 });
+
+// set card background
+const drawRandomPattern = () => backgroundPattern[Math.round(Math.floor(Math.random() * backgroundPattern.length))];
+creditCard.setAttribute('style', `background-image: url("${drawRandomPattern()}")`);
 
 //Initialize CC show eye icon as disabled
 const shouldDisableEyeIcon = () => {
@@ -164,13 +177,13 @@ const validateCompanyLogo = value => {
     const imageElement = document.createElement('img');
     imageElement.setAttribute('src', company);
     imageElement.setAttribute('alt', altName);
-    imageElement.setAttribute('class', 'credit-card__company-image');
-    imageElement.classList.add('credit-card__company-image--show');
+    imageElement.setAttribute('class', 'credit-card__company-image credit-card__company-image--show');
     creditCardImage.innerHTML = '';
     creditCardImage.appendChild(imageElement);
     card.cardCompany = company;
   } else if (value.length === 0) {
-    document.querySelector('.credit-card__company-image').classList.add('credit-card__company-image--hide');
+    const imageElement = document.querySelector('.credit-card__company-image');
+    imageElement && imageElement.classList.add('credit-card__company-image--hide');
     setTimeout(() => {
       creditCardImage.innerHTML = '';
       card.cardCompany = ''
@@ -179,7 +192,6 @@ const validateCompanyLogo = value => {
 };
 
 const displayCardNumber = value => {
-
   validateCompanyLogo(value);
   const inputValueArray = [...value];
 
@@ -255,6 +267,10 @@ const focusShowCardNumber = () => {
   creditCardNumberInput.value = card.cardNumber;
 };
 
+const labelFocus = (target) => {
+  target.classList.toggle('credit-car__placeholder--active');
+};
+
 const blurHideCardNumbers = (value) => {
   const inputValueArray = [...value];
   let hiddenNumber = '';
@@ -283,8 +299,12 @@ creditCardNumberInput.addEventListener('keypress', (e) => checkIsNumber(e));
 creditCardNumberInput.addEventListener('input', (e) => generateData(e.target.value, 'number'));
 creditCardNumberInput.addEventListener('blur', (e) => blurHideCardNumbers(e.target.value));
 creditCardNumberInput.addEventListener('focus', () => focusShowCardNumber());
+creditCardNumberInput.addEventListener('focus', () => labelFocus(creditCardNumberPlaceholder));
+creditCardNumberInput.addEventListener('blur', () => labelFocus(creditCardNumberPlaceholder));
 //Set owner data
 creditCardOwnerInput.addEventListener('input', (e) => generateData(e.target.value, 'owner'));
+creditCardOwnerInput.addEventListener('focus', () => labelFocus(creditCardOwnerPlaceholder));
+creditCardOwnerInput.addEventListener('blur', () => labelFocus(creditCardOwnerPlaceholder));
 //Set month expiration date
 creditCardMonthExpSelect.addEventListener('change', (e) => generateData(e.target.value, 'month'));
 //Set year expiration date
