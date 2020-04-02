@@ -21,6 +21,14 @@ class CreditCard {
     this.cvvCode = '';
     this.isCardNumberVisible = false;
     this.cardCompany = '';
+    this.isCardValid = {
+      cardNumber: true,
+      cardOwner: true,
+      expirationMont: true,
+      expirationYear: true,
+      cvvCode: true,
+      cardCompany: true,
+    }
   }
 
   setCardData(value, field) {
@@ -64,6 +72,7 @@ const creditCardCVVData = document.querySelector('.credit-card__back-cvv-code');
 const backgroundPattern = [pattern1, pattern2, pattern3, pattern4];
 const creditCardNumberPlaceholder = document.querySelector('.credit-car__card-number-placeholder');
 const creditCardOwnerPlaceholder = document.querySelector('.credit-card-owner__placeholder');
+const expirationDatePlaceholder = document.querySelector('.credit-card__expiration-date');
 
 
 //DOM Manipulation
@@ -198,8 +207,10 @@ const displayCardNumber = value => {
   creditCardNumbersElements.forEach((element, index) => {
     if (card.isCardNumberVisible) {
       if (index < inputValueArray.length) {
+        element.classList.add('credit-card__single-number-animation--active');
         element.innerHTML = inputValueArray[index];
       } else {
+        element.classList.remove('credit-card__single-number-animation--active');
         element.innerHTML = '#';
       }
     } else {
@@ -290,7 +301,66 @@ const blurHideCardNumbers = (value) => {
   if (!card.isCardNumberVisible) {
     creditCardNumberInput.value = hiddenNumber;
   }
+};
 
+const validateCard = () => {
+  let errorMessage = [];
+  if (card.cardNumber.length < 16) {
+    errorMessage = [...errorMessage, 'Credit card number is too short'];
+  }
+
+  if (card.cardOwner.length < 3) {
+    errorMessage = [...errorMessage, 'Credit card owner full name is too short'];
+  }
+
+  if (!card.expirationMont || !card.expirationYear) {
+    errorMessage = [...errorMessage, 'Please select date in both fields'];
+  }
+
+  if (card.cvvCode.length !== 3) {
+    errorMessage = [...errorMessage, 'Incorect CVV code'];
+  }
+
+  if (!card.cardCompany) {
+    errorMessage = [...errorMessage, 'We\'re sorry we do not accept your card'];
+  }
+
+  return errorMessage
+};
+
+const pretendSavingDataToTheServer = () => {
+  return new Promise((resolve => {
+      setTimeout(() => {
+        resolve({ res: 'success' })
+      }, 2000)
+    }),
+  )
+};
+
+const sendCardInfo = () => {
+  submitButton.classList.add('credit-card__submit-button--loading');
+  submitButton.innerHTML = '<span class="material-icons loop"> loop </span>';
+  const errors = validateCard();
+  if (errors.length > 0){
+    console.log('error')
+  } else {
+    pretendSavingDataToTheServer().then(data => {
+      if (data.res === 'success') {
+        console.log('fake success after 2 s');
+        document.querySelector('span.loop').classList.add('credit-card__submit-button--change_icon');
+        setTimeout(() => {
+          submitButton.classList.remove('credit-card__submit-button--loading');
+          submitButton.classList.add('credit-card__submit-button--success');
+          submitButton.innerHTML = '<span class="material-icons done-icon"> done </span>';
+        }, 600);
+
+        setTimeout(() => {
+          submitButton.classList.remove('credit-card__submit-button--success');
+          submitButton.innerHTML = 'Submit';
+        }, 1500);
+      }
+    });
+  }
 };
 
 //events
@@ -307,8 +377,12 @@ creditCardOwnerInput.addEventListener('focus', () => labelFocus(creditCardOwnerP
 creditCardOwnerInput.addEventListener('blur', () => labelFocus(creditCardOwnerPlaceholder));
 //Set month expiration date
 creditCardMonthExpSelect.addEventListener('change', (e) => generateData(e.target.value, 'month'));
+creditCardMonthExpSelect.addEventListener('focus', () => labelFocus(expirationDatePlaceholder));
+creditCardMonthExpSelect.addEventListener('blur', () => labelFocus(expirationDatePlaceholder));
 //Set year expiration date
 creditCardYearExpSelect.addEventListener('change', (e) => generateData(e.target.value, 'year'));
+creditCardYearExpSelect.addEventListener('focus', () => labelFocus(expirationDatePlaceholder));
+creditCardYearExpSelect.addEventListener('blur', () => labelFocus(expirationDatePlaceholder));
 //Set CVV code
 creditCardCVVInput.addEventListener('keypress', (e) => checkIsNumber(e));
 creditCardCVVInput.addEventListener('input', (e) => generateData(e.target.value, 'cvv'));
@@ -317,6 +391,4 @@ creditCardCVVInput.addEventListener('blur', () => rotateCard('front'));
 //Eye visibility change
 eyeIcon.addEventListener('click', (e) => setVisibility(e));
 //Submit form
-submitButton.addEventListener('click', () => {
-  console.log('CARD DATA', card);
-});
+submitButton.addEventListener('click', () => sendCardInfo());

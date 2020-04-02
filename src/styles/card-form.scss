@@ -23,14 +23,14 @@
   width: 100%;
   height: 40px;
   border-radius: 8px;
-  border: 1px solid gray;
+  border: 2px solid gray;
   outline: none;
   padding: 10px;
   font-size: 20px;
   transition: border 1s;
 
   &:focus {
-    border: 1px solid navy;
+    border: 2px solid navy;
     transition: border 1s;
   }
 }
@@ -38,10 +38,23 @@
 .card-input__select {
   height: 40px;
   border-radius: 8px;
-  border: 1px solid gray;
   outline: none;
   padding: 5px;
   cursor: pointer;
+  border: 2px solid gray;
+
+  &:first-child {
+    margin-right: 10px;
+  }
+
+  &:focus {
+    border: 2px solid navy;
+    transition: border 1s;
+  }
+
+  option {
+    border: 1px solid gray;
+  }
 }
 
 .card-form__row {
@@ -74,3 +87,80 @@ label {
   cursor: not-allowed!important;
   color: gray;
 }
+
+#credit-card__submit-button {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 90%;
+  height: 40px;
+  border-radius: 5px;
+  outline: none;
+  cursor: pointer;
+  background-color: #3d72b4;
+  color: white;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: background-color 0.5s, letter-spacing 0.5s;
+
+  &:hover {
+    background-color: #3d72d9;
+    letter-spacing: 5px;
+    transition: background-color 0.5s, letter-spacing 0.5s;
+  }
+}
+
+.credit-card__submit-button--loading {
+  background-color: darkblue!important;
+  color: white;
+  transition: background-color 0.1s;
+}
+
+.loop {
+  animation: spinnerLoop infinite linear 1s;
+}
+
+@keyframes spinnerLoop {
+  from {
+    transform: rotate(-180deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
+.credit-card__submit-button--change_icon {
+  animation: hideIcon forwards linear 0.2s;
+}
+
+@keyframes hideIcon {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fontSizeChange {
+  from {
+    font-size: 20px;
+  }
+  to {
+    font-size: 35px!important;
+  }
+}
+
+.credit-card__submit-button--success {
+  background-color: darkgreen!important;
+  transition: background-color 0.5s;
+}
+
+.done-icon {
+  font-size: 35px!important;
+  animation: fontSizeChange forwards 0.2s ease-in;
+}
+

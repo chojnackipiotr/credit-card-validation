@@ -124,6 +124,10 @@
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+  padding: 10px 10px;
+  border: 2px solid transparent;
+  transition: border-color 1s;
+  width: 35%;
 }
 
 .credit-card__expiration-month,
@@ -202,7 +206,7 @@
   border: 2px solid transparent;
   transition: border-color 1s;
   padding: 10px 15px;
-  width: 70%;
+  width: 65%;
 }
 
 .credit-car__placeholder--active {
