@@ -164,3 +164,31 @@ label {
   animation: fontSizeChange forwards 0.2s ease-in;
 }
 
+.credit-card__submit-button--error {
+  background-color: darkred!important;
+  transition: background-color 0.5s;
+}
+
+.credit-card__errors-container {
+  opacity: 0;
+  transition: opacity 0.25s;
+  color: red;
+  font-size: 12px;
+  font-weight: normal;
+  padding: 5px 30px 30px 30px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  list-style: square;
+}
+
+.credit-card__errors-container--visible {
+  opacity: 1;
+  transition: opacity 0.25s;
+}
+
+.credit-card__errors-list-item {
+  width: 50%;
+  padding-bottom: 5px;
+}
+

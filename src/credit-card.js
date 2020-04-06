@@ -73,7 +73,7 @@ const backgroundPattern = [pattern1, pattern2, pattern3, pattern4];
 const creditCardNumberPlaceholder = document.querySelector('.credit-car__card-number-placeholder');
 const creditCardOwnerPlaceholder = document.querySelector('.credit-card-owner__placeholder');
 const expirationDatePlaceholder = document.querySelector('.credit-card__expiration-date');
-
+const errorsContainer = document.querySelector('.credit-card__errors-container');
 
 //DOM Manipulation
 // generationg comming years
@@ -340,11 +340,30 @@ const pretendSavingDataToTheServer = () => {
 const sendCardInfo = () => {
   submitButton.classList.add('credit-card__submit-button--loading');
   submitButton.innerHTML = '<span class="material-icons loop"> loop </span>';
+  errorsContainer.innerHTML = '';
   const errors = validateCard();
   if (errors.length > 0){
-    console.log('error')
+    document.querySelector('span.loop').classList.add('credit-card__submit-button--change_icon');
+    setTimeout(() => {
+      submitButton.classList.remove('credit-card__submit-button--loading');
+      submitButton.classList.add('credit-card__submit-button--error');
+      submitButton.innerHTML = '<span class="material-icons done-icon"> error_outline </span>';
+    }, 600);
+
+    errors.forEach(el => {
+      let newLi = document.createElement('li');
+      newLi.classList.add('credit-card__errors-list-item');
+      newLi.innerHTML = el;
+      errorsContainer.append(newLi);
+    });
+    errorsContainer.classList.add('credit-card__errors-container--visible');
+    setTimeout(() => {
+      submitButton.classList.remove('credit-card__submit-button--error');
+      submitButton.innerHTML = 'Submit';
+    }, 1500);
   } else {
-    pretendSavingDataToTheServer().then(data => {
+    pretendSavingDataToTheServer()
+    .then(data => {
       if (data.res === 'success') {
         console.log('fake success after 2 s');
         document.querySelector('span.loop').classList.add('credit-card__submit-button--change_icon');
