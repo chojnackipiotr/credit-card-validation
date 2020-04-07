@@ -7,10 +7,10 @@ import troy from './static/images/companies-logos/troy.png';
 import dinersclub from './static/images/companies-logos/dinersclub.png';
 import jcb from './static/images/companies-logos/jcb.png';
 
-import pattern1 from './static/images/card-patterns/pattern1.jpg'
-import pattern2 from './static/images/card-patterns/pattern2.jpg'
-import pattern3 from './static/images/card-patterns/pattern3.jpg'
-import pattern4 from './static/images/card-patterns/pattern4.jpg'
+import pattern1 from './static/images/card-patterns/pattern1.jpg';
+import pattern2 from './static/images/card-patterns/pattern2.jpg';
+import pattern3 from './static/images/card-patterns/pattern3.jpg';
+import pattern4 from './static/images/card-patterns/pattern4.jpg';
 
 class CreditCard {
   constructor() {
@@ -28,7 +28,7 @@ class CreditCard {
       expirationYear: true,
       cvvCode: true,
       cardCompany: true,
-    }
+    };
   }
 
   setCardData(value, field) {
@@ -195,7 +195,7 @@ const validateCompanyLogo = value => {
     imageElement && imageElement.classList.add('credit-card__company-image--hide');
     setTimeout(() => {
       creditCardImage.innerHTML = '';
-      card.cardCompany = ''
+      card.cardCompany = '';
     }, 100);
   }
 };
@@ -218,7 +218,7 @@ const displayCardNumber = value => {
         element.classList.add('credit-card__single-number-animation--active');
         setTimeout(() => {
           element.innerHTML = inputValueArray[index];
-        }, 20)
+        }, 20);
       } else {
         element.classList.remove('credit-card__single-number-animation--active');
         element.innerHTML = '#';
@@ -233,13 +233,13 @@ const showExpData = (value, field) => {
     creditCardMonthExpText.classList.add('credit-card__single-number-animation--active');
     setTimeout(() => {
       creditCardMonthExpText.classList.remove('credit-card__single-number-animation--active');
-    }, 1000)
+    }, 1000);
   } else if (field === 'year') {
     creditCardYearExpText.innerHTML = value;
     creditCardYearExpText.classList.add('credit-card__single-number-animation--active');
     setTimeout(() => {
       creditCardYearExpText.classList.remove('credit-card__single-number-animation--active');
-    }, 1000)
+    }, 1000);
   }
 };
 
@@ -325,16 +325,16 @@ const validateCard = () => {
     errorMessage = [...errorMessage, 'We\'re sorry we do not accept your card'];
   }
 
-  return errorMessage
+  return errorMessage;
 };
 
 const pretendSavingDataToTheServer = () => {
   return new Promise((resolve => {
       setTimeout(() => {
-        resolve({ res: 'success' })
-      }, 2000)
+        resolve({ res: 'success' });
+      }, 2000);
     }),
-  )
+  );
 };
 
 const sendCardInfo = () => {
@@ -342,20 +342,23 @@ const sendCardInfo = () => {
   submitButton.innerHTML = '<span class="material-icons loop"> loop </span>';
   errorsContainer.innerHTML = '';
   const errors = validateCard();
-  if (errors.length > 0){
+  if (errors.length > 0) {
     document.querySelector('span.loop').classList.add('credit-card__submit-button--change_icon');
     setTimeout(() => {
       submitButton.classList.remove('credit-card__submit-button--loading');
       submitButton.classList.add('credit-card__submit-button--error');
       submitButton.innerHTML = '<span class="material-icons done-icon"> error_outline </span>';
-    }, 600);
+    }, 200);
 
-    errors.forEach(el => {
-      let newLi = document.createElement('li');
-      newLi.classList.add('credit-card__errors-list-item');
-      newLi.innerHTML = el;
-      errorsContainer.append(newLi);
-    });
+    setTimeout(() => {
+      errors.forEach(el => {
+        let newLi = document.createElement('li');
+        newLi.classList.add('credit-card__errors-list-item');
+        newLi.innerHTML = el;
+        errorsContainer.append(newLi);
+      });
+    }, 500);
+
     errorsContainer.classList.add('credit-card__errors-container--visible');
     setTimeout(() => {
       submitButton.classList.remove('credit-card__submit-button--error');
@@ -376,6 +379,25 @@ const sendCardInfo = () => {
         setTimeout(() => {
           submitButton.classList.remove('credit-card__submit-button--success');
           submitButton.innerHTML = 'Submit';
+          creditCardNumbersElements.forEach(el => {
+            el.innerHTML = '#';
+          });
+          creditCardOwnerInput.value = '';
+          creditCardOwnerData.innerHTML = 'FULL NAME';
+          creditCardMonthExpSelect.value = 'Select month';
+          creditCardYearExpSelect.value = 'Select Year';
+          creditCardMonthExpText.innerHTML = 'MM';
+          creditCardYearExpText.innerHTML = 'YY';
+          creditCardCVVInput.value = '';
+          creditCardCVVData.innerHTML = '';
+          creditCardImage.innerHTML = '';
+          creditCardNumberInput.value = '';
+          card.cardNumber = '';
+          card.cardOwner = '';
+          card.expirationYear = '';
+          card.expirationMont = '';
+          card.cvvCode = '';
+          card.cardCompany = '';
         }, 1500);
       }
     });
